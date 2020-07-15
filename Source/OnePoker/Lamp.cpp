@@ -1,9 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Lamp.h"
 #include "Components/PointLightComponent.h"
 #include "Components/SpotLightComponent.h"
-#include "Lamp.h"
-
 
 // Sets default values
 ALamp::ALamp()

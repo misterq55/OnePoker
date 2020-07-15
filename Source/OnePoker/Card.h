@@ -4,19 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Lamp.generated.h"
+#include "Card.generated.h"
 
-class UPointLightComponent;
-class USpotLightComponent;
+struct CardInfo {
+	char Number;
+	char Mark;
+
+	CardInfo()
+		: Number(0), Mark(0)
+	{}
+
+	CardInfo(char number, char mark)
+		: Number(number), Mark(mark)
+	{}
+};
 
 UCLASS()
-class ONEPOKER_API ALamp : public AActor
+class ONEPOKER_API ACard : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ALamp();
+	ACard();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,23 +36,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// 멤버 변수 및 함수
 private:
 	UPROPERTY(VisibleAnyWhere)
-	UStaticMeshComponent* LampBody;
+	UStaticMeshComponent* CardBody;
 
-	UPROPERTY(VisibleAnyWhere)
-	UPointLightComponent* PointLight;
-
-	UPROPERTY(VisibleAnyWhere)
-	USpotLightComponent* SpotLight;
-
-	float TurnedOnPoint;
-	float TurnedOnSpot;
+	CardInfo Info;
 
 public:
-	UPROPERTY(VisibleAnyWhere)
-	bool TurnOn;
-
-	void ControlLamp(bool turnOn);
+	void SetCardInfo(char number, char mark);
 };
