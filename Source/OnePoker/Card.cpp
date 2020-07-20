@@ -41,15 +41,15 @@ void ACard::SetCardInfo(char number, char mark)
 
 	UStaticMesh* mesh = CardBody->GetStaticMesh();
 	if (mesh) {
-		static ConstructorHelpers::FObjectFinder<UMaterial> materialFinder(TEXT("/Game/HG_Playing_Cards/Materials/Card_Front"));
+		static ConstructorHelpers::FObjectFinder<UMaterial> materialFinder(TEXT("Material'/Game/HG_Playing_Cards/Materials/Card_Front'"));
 		//UMaterial *meterial = mesh->GetMaterial(0)->GetMaterial();
 		UMaterial* meterial = materialFinder.Object;
 
 		UMaterialInstanceDynamic *dynamicMeterial = UMaterialInstanceDynamic::Create(meterial, NULL);
 
-		static ConstructorHelpers::FObjectFinder<UTexture> textureFinder(TEXT("/Game/HG_Playing_Cards/Textures/Set_1/4096/T_Set_01_002_4096.T_Set_01_002_4096"));
+		static ConstructorHelpers::FObjectFinder<UTexture> textureFinder(TEXT("Texture2D'/Game/HG_Playing_Cards/Textures/Set_1/4096/T_Set_01_002_4096.T_Set_01_002_4096'"));
 		UTexture* texture = textureFinder.Object;
-		dynamicMeterial->SetTextureParameterValue(FName(TEXT("StaticTexture")), texture);
+		dynamicMeterial->SetTextureParameterValue(FName(TEXT("DynamicTexture")), texture);
 
 		mesh->SetMaterial(0, dynamicMeterial);
 	}
