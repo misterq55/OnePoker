@@ -41,6 +41,7 @@ private:
 	UStaticMeshComponent* CardBody;
 
 	CardInfo Info;
+	FString BasePath;
 
 public:
 	void SetCardInfo(char number, char mark);

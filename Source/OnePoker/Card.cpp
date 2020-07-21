@@ -17,7 +17,10 @@ ACard::ACard()
 		CardBody->SetStaticMesh(SM_CARD.Object);
 	}
 
-	SetCardInfo(0, 0);
+	BasePath += "/Game/HG_Playing_Cards/Materials/";
+	const TCHAR* temp = *BasePath;
+
+	SetCardInfo('H', 'K');
 }
 
 // Called when the game starts or when spawned
@@ -34,24 +37,130 @@ void ACard::Tick(float DeltaTime)
 
 }
 
-void ACard::SetCardInfo(char number, char mark)
+void ACard::SetCardInfo(char mark, char number)
 {
 	Info.Number = number;
 	Info.Mark = mark;
 
+	int numberType = 0;
+	int markType = 0;
+
+	switch (Info.Number)
+	{
+	case 'A':
+	case 'a':
+		numberType = 1;
+		break;
+
+	case 2:
+	case '2':
+		numberType = 2;
+		break;
+
+	case 3:
+	case '3':
+		numberType = 3;
+		break;
+
+	case 4:
+	case '4':
+		numberType = 4;
+		break;
+
+	case 5:
+	case '5':
+		numberType = 5;
+		break;
+
+	case 6:
+	case '6':
+		numberType = 6;
+		break;
+
+	case 7:
+	case '7':
+		numberType = 7;
+		break;
+
+	case 8:
+	case '8':
+		numberType = 8;
+		break;
+
+	case 9:
+	case '9':
+		numberType = 9;
+		break;
+
+	case 10:
+	case '0':
+		numberType = 10;
+		break;
+
+	case 'J':
+	case 'j':
+		numberType = 11;
+		break;
+
+	case 'Q':
+	case 'q':
+		numberType = 12;
+		break;
+
+	case 'K':
+	case 'k':
+		numberType = 13;
+		break;
+	default:
+		break;
+	}
+
+	switch (Info.Mark)
+	{
+	case 'D':
+	case 'd':
+		markType = 0;
+		break;
+
+	case 'C':
+	case 'c':
+		markType = 1;
+		break;
+
+	case 'H':
+	case 'h':
+		markType = 2;
+		break;
+
+	case 'S':
+	case 's':
+		markType = 3;
+		break;
+	default:
+		break;
+	}
+
+	// BasePath += "/Game/HG_Playing_Cards/Materials/Set_1/M_Set_1_007";
+
 	UStaticMesh* mesh = CardBody->GetStaticMesh();
 	if (mesh) {
-		static ConstructorHelpers::FObjectFinder<UMaterial> materialFinder(TEXT("Material'/Game/HG_Playing_Cards/Materials/Card_Front'"));
-		//UMaterial *meterial = mesh->GetMaterial(0)->GetMaterial();
-		UMaterial* meterial = materialFinder.Object;
+		FString tempPath = BasePath + TEXT("Set_1/M_Set_1_");
+		int tempNumber = markType * 13 + numberType;
+		if (tempNumber < 10) {
+			tempPath += "00";
+		}
+		else {
+			tempPath += "0";
+		}
 
-		UMaterialInstanceDynamic *dynamicMeterial = UMaterialInstanceDynamic::Create(meterial, NULL);
+		tempPath.AppendInt(markType * 13 + numberType);
+		const TCHAR* temp = *tempPath;
+		static ConstructorHelpers::FObjectFinder<UMaterialInstance> materialFinder(temp);
+		// static ConstructorHelpers::FObjectFinder<UMaterialInstance> materialFinder(TEXT("/Game/HG_Playing_Cards/Materials/Set_1/M_Set_1_007"));
+		
+		UMaterialInstance* materialInst = materialFinder.Object;
 
-		static ConstructorHelpers::FObjectFinder<UTexture> textureFinder(TEXT("Texture2D'/Game/HG_Playing_Cards/Textures/Set_1/4096/T_Set_01_002_4096.T_Set_01_002_4096'"));
-		UTexture* texture = textureFinder.Object;
-		dynamicMeterial->SetTextureParameterValue(FName(TEXT("DynamicTexture")), texture);
-
-		mesh->SetMaterial(0, dynamicMeterial);
+		mesh->SetMaterial(0, materialInst);
 	}
 }
 

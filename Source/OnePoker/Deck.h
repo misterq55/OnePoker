@@ -2,9 +2,14 @@
 
 #pragma once
 
+#include <list>
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Deck.generated.h"
+
+using std::list;
+
+class ACard;
 
 UCLASS()
 class ONEPOKER_API ADeck : public AActor
@@ -23,6 +28,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnyWhere)
-	UObject* Card;
+private:
+	list<ACard*> CardList;
+	void Init();
+
+public:
+	void addCard(char number, char mark);
 };
