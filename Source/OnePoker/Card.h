@@ -45,4 +45,5 @@ private:
 
 public:
 	void SetCardInfo(char number, char mark);
+	CardInfo getCardInfo() { return Info; }
 };
