@@ -2,7 +2,7 @@
 
 
 #include "Deck.h"
-#include "Card.h"
+#include <random>
 
 // Sets default values
 ADeck::ADeck()
@@ -10,7 +10,9 @@ ADeck::ADeck()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	addCard('C', 'K');
+	InitDeck();
+
+	// GetWorld()->get
 }
 
 // Called when the game starts or when spawned
@@ -34,12 +36,29 @@ void ADeck::Init()
 
 void ADeck::addCard(char number, char mark)
 {
-	UWorld* world = GetWorld();
+	CardList.push_back(CardInfo(number, mark));
+}
 
-	if (world) {
-		ACard* temp = (ACard*)world->SpawnActor(ACard::StaticClass());
-		CardList.push_back(temp);
-		// int itemp = 0;
-		// temp->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
+void ADeck::InitDeck()
+{
+	char numberBuffer[13] = { 'A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K' };
+	char markBuffer[4] = { 'C', 'D', 'H', 'S' };
+
+	for (int k = 0; k < 3; k++) {
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 13; j++) {
+				addCard(numberBuffer[j], markBuffer[i]);
+			}
+		}
 	}
+
+	shuffle();
+}
+
+void ADeck::shuffle() {
+	std::vector<CardInfo> vec(CardList.begin(), CardList.end());
+	std::shuffle(vec.begin(), vec.end(), std::mt19937_64{ std::random_device{}() });
+
+	std::list<CardInfo> shuffled_card_list{ vec.begin(), vec.end() };
+	CardList.swap(shuffled_card_list);
 }

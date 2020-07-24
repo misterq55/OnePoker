@@ -3,13 +3,14 @@
 #pragma once
 
 #include <list>
+#include "Card.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Deck.generated.h"
 
 using std::list;
 
-class ACard;
+//class ACard;
 
 UCLASS()
 class ONEPOKER_API ADeck : public AActor
@@ -29,9 +30,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	list<ACard*> CardList;
+	list<CardInfo> CardList;
 	void Init();
 
 public:
 	void addCard(char number, char mark);
+	void InitDeck();
+	void shuffle();
 };
