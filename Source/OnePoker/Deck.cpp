@@ -10,6 +10,8 @@ ADeck::ADeck()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
+	memset(Cards, 0, sizeof(Cards));
+
 	InitDeck();
 
 	// GetWorld()->get
@@ -53,6 +55,22 @@ void ADeck::InitDeck()
 	}
 
 	shuffle();
+
+	UWorld *world = GetWorld();
+
+	if (!UObject::IsTemplate(RF_Transient) && world) {
+		ACard* card0 = (ACard*)world->SpawnActor(ACard::StaticClass());
+		card0->Rename(TEXT("TestCard0"));
+		card0->SetCardInfo(CardList.front());
+		CardList.pop_front();
+		Cards[0] = card0;
+
+		ACard* card1 = (ACard*)world->SpawnActor(ACard::StaticClass());
+		card1->Rename(TEXT("TestCard1"));
+		card1->SetCardInfo(CardList.front());
+		CardList.pop_front();
+		Cards[1] = card1;
+	}
 }
 
 void ADeck::shuffle() {

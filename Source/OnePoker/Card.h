@@ -21,12 +21,10 @@ struct CardInfo {
 
 UCLASS()
 class ONEPOKER_API ACard : public AActor
-{
-	GENERATED_BODY()
-	
+{	
 public:	
 	// Sets default values for this actor's properties
-	ACard();
+	GENERATED_UCLASS_BODY()
 
 protected:
 	// Called when the game starts or when spawned
@@ -40,10 +38,14 @@ private:
 	UPROPERTY(VisibleAnyWhere)
 	UStaticMeshComponent* CardBody;
 
+	UPROPERTY(EditAnyWhere)
+	class UInstancedStaticMeshComponent* MeshInstances;
+
 	CardInfo Info;
 	FString BasePath;
 
 public:
 	void SetCardInfo(char number, char mark);
+	void SetCardInfo(CardInfo info);
 	CardInfo getCardInfo() { return Info; }
 };

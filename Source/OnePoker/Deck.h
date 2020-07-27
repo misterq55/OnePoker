@@ -30,6 +30,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	ACard* Cards[2];
 	list<CardInfo> CardList;
 	void Init();
 

@@ -4,7 +4,7 @@
 #include "Card.h"
 
 // Sets default values
-ACard::ACard()
+ACard::ACard(const FObjectInitializer& ObjectInitializer)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -13,14 +13,18 @@ ACard::ACard()
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_CARD(TEXT("/Game/HG_Playing_Cards/Meshes/SM_PlayingCard.SM_PlayingCard"));
 
+	// MeshInstances = ObjectInitializer.CreateAbstractDefaultSubobject<UInstancedStaticMeshComponent>(this, TEXT("MeshInstances"));
+	//RootComponent = MeshInstances;
+	// CardBody = MeshInstances;
+	//CardBody->SetupAttachment(MeshInstances);
+
 	if (SM_CARD.Succeeded()) {
+		//MeshInstances->SetStaticMesh(SM_CARD.Object);
+		//CardBody->SetStaticMesh(MeshInstances->GetStaticMesh());
 		CardBody->SetStaticMesh(SM_CARD.Object);
 	}
 
-	BasePath += "/Game/HG_Playing_Cards/Materials/";
-	const TCHAR* temp = *BasePath;
-
-	SetCardInfo('H', 'K');
+	BasePath += "/Game/HG_Playing_Cards/Materials/";	
 }
 
 // Called when the game starts or when spawned
@@ -143,6 +147,7 @@ void ACard::SetCardInfo(char mark, char number)
 	// BasePath += "/Game/HG_Playing_Cards/Materials/Set_1/M_Set_1_007";
 
 	UStaticMesh* mesh = CardBody->GetStaticMesh();
+	// UStaticMesh* mesh = MeshInstances->GetStaticMesh();
 	if (mesh) {
 		FString tempPath = BasePath + TEXT("Set_1/M_Set_1_");
 		int tempNumber = markType * 13 + numberType;
@@ -155,12 +160,19 @@ void ACard::SetCardInfo(char mark, char number)
 
 		tempPath.AppendInt(markType * 13 + numberType);
 		const TCHAR* temp = *tempPath;
-		static ConstructorHelpers::FObjectFinder<UMaterialInstance> materialFinder(temp);
-		// static ConstructorHelpers::FObjectFinder<UMaterialInstance> materialFinder(TEXT("/Game/HG_Playing_Cards/Materials/Set_1/M_Set_1_007"));
+		ConstructorHelpers::FObjectFinder<UMaterialInstance> materialFinder(temp);
 		
 		UMaterialInstance* materialInst = materialFinder.Object;
 
-		mesh->SetMaterial(0, materialInst);
+		// mesh->SetMaterial(0, materialInst);
+
+		UMaterialInstanceDynamic* dynMaterial = UMaterialInstanceDynamic::Create(materialInst, this);
+
+		mesh->SetMaterial(0, dynMaterial);
 	}
 }
 
+void ACard::SetCardInfo(CardInfo info)
+{
+	SetCardInfo(info.Mark, info.Number);
+}
