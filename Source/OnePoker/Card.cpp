@@ -13,15 +13,22 @@ ACard::ACard(const FObjectInitializer& ObjectInitializer)
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_CARD(TEXT("/Game/HG_Playing_Cards/Meshes/SM_PlayingCard.SM_PlayingCard"));
 
-	// MeshInstances = ObjectInitializer.CreateAbstractDefaultSubobject<UInstancedStaticMeshComponent>(this, TEXT("MeshInstances"));
+	MeshInstances = ObjectInitializer.CreateAbstractDefaultSubobject<UInstancedStaticMeshComponent>(this, TEXT("MeshInstances"));
+
+	//MeshInstances->RegisterComponent();
 	//RootComponent = MeshInstances;
 	// CardBody = MeshInstances;
 	//CardBody->SetupAttachment(MeshInstances);
 
 	if (SM_CARD.Succeeded()) {
-		//MeshInstances->SetStaticMesh(SM_CARD.Object);
+		MeshInstances->SetStaticMesh(SM_CARD.Object);
+		AddInstanceComponent(MeshInstances);
+		FTransform instanceTransform;
+		instanceTransform.SetLocation(FVector::UpVector);
+		instanceTransform.SetRotation(FQuat::Identity);
+		MeshInstances->AddInstance(instanceTransform);
 		//CardBody->SetStaticMesh(MeshInstances->GetStaticMesh());
-		CardBody->SetStaticMesh(SM_CARD.Object);
+		//CardBody->SetStaticMesh(SM_CARD.Object);
 	}
 
 	BasePath += "/Game/HG_Playing_Cards/Materials/";	
@@ -146,8 +153,8 @@ void ACard::SetCardInfo(char mark, char number)
 
 	// BasePath += "/Game/HG_Playing_Cards/Materials/Set_1/M_Set_1_007";
 
-	UStaticMesh* mesh = CardBody->GetStaticMesh();
-	// UStaticMesh* mesh = MeshInstances->GetStaticMesh();
+	// UStaticMesh* mesh = CardBody->GetStaticMesh();
+	UStaticMesh* mesh = MeshInstances->GetStaticMesh();
 	if (mesh) {
 		FString tempPath = BasePath + TEXT("Set_1/M_Set_1_");
 		int tempNumber = markType * 13 + numberType;
@@ -168,7 +175,9 @@ void ACard::SetCardInfo(char mark, char number)
 
 		UMaterialInstanceDynamic* dynMaterial = UMaterialInstanceDynamic::Create(materialInst, this);
 
-		mesh->SetMaterial(0, dynMaterial);
+		// mesh->SetMaterial(0, dynMaterial);
+
+		MeshInstances->SetMaterial(0, dynMaterial);
 	}
 }
 

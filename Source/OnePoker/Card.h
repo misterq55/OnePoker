@@ -35,7 +35,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	UPROPERTY(VisibleAnyWhere)
+	// UPROPERTY(VisibleAnyWhere)
 	UStaticMeshComponent* CardBody;
 
 	UPROPERTY(EditAnyWhere)
