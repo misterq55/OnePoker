@@ -47,5 +47,6 @@ private:
 public:
 	void SetCardInfo(char number, char mark);
 	void SetCardInfo(CardInfo info);
+	void SetCardLocation(FVector location);
 	CardInfo getCardInfo() { return Info; }
 };

@@ -60,16 +60,18 @@ void ADeck::InitDeck()
 
 	if (!UObject::IsTemplate(RF_Transient) && world) {
 		ACard* card0 = (ACard*)world->SpawnActor(ACard::StaticClass());
-		card0->Rename(TEXT("TestCard0"));
+		card0->SetActorLabel(TEXT("TestCard0"));
 		card0->SetCardInfo(CardList.front());
 		CardList.pop_front();
 		Cards[0] = card0;
+		card0->SetCardLocation(FVector(-50, 0, 50));
 
 		ACard* card1 = (ACard*)world->SpawnActor(ACard::StaticClass());
-		card1->Rename(TEXT("TestCard1"));
+		card1->SetActorLabel(TEXT("TestCard1"));
 		card1->SetCardInfo(CardList.front());
 		CardList.pop_front();
 		Cards[1] = card1;
+		card1->SetCardLocation(FVector(50, 0, 50));
 	}
 }
 
