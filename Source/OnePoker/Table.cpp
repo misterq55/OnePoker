@@ -2,13 +2,34 @@
 
 
 #include "Table.h"
+#include "Lamp.h"
 
 // Sets default values
-ATable::ATable()
+ATable::ATable(const FObjectInitializer& ObjectInitializer)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	TableBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TABLE"));
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_CARD(TEXT("StaticMesh'/Game/OfficePack/StaticMesh/SM_Desk03.SM_Desk03'"));
+
+	UWorld* world = GetWorld();
+
+	if (!UObject::IsTemplate(RF_Transient) && world) {
+		for (int i = 0; i < 2; i++) {
+			LampActors[i] = ObjectInitializer.CreateDefaultSubobject<UChildActorComponent>(this, TEXT("Lamp"));
+			LampActors[i]->SetChildActorClass(ALamp::StaticClass());
+			// LampActors[i]->CreateChildActor();
+			/*Lamps[i] = (ALamp*)world->SpawnActor(ALamp::StaticClass());
+			FString label;
+			label += TEXT("Lamp");
+			label.AppendInt(i);
+			Lamps[i]->SetActorLabel(*label);
+			Lamps[i]->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
+			Lamps[i]->SetActorRelativeLocation(FVector::ZeroVector);*/
+		}
+	}
 }
 
 // Called when the game starts or when spawned
@@ -23,5 +44,17 @@ void ATable::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ATable::PostInitializeComponents()
+{
+
+}
+
+void ATable::ControlLamp(int idx, bool turnOn)
+{
+	/*if (idx == 0 || idx == 1) {
+		Lamps[idx]->ControlLamp(turnOn);
+	}*/
 }
 

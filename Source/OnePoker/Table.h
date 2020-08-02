@@ -6,10 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "Table.generated.h"
 
+class ALamp;
+
 UCLASS()
 class ONEPOKER_API ATable : public AActor
 {
-	GENERATED_BODY()
+	GENERATED_UCLASS_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
@@ -22,5 +24,16 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	virtual void PostInitializeComponents() override;
 
+private:
+	UPROPERTY(VisibleAnyWhere)
+	UStaticMeshComponent* TableBody;
+
+	// ALamp *Lamps[2];
+	UPROPERTY(VisibleAnyWhere)
+	UChildActorComponent* LampActors[2];
+
+public:
+	void ControlLamp(int idx, bool turnOn);
 };
