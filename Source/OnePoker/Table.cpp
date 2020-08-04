@@ -12,22 +12,25 @@ ATable::ATable(const FObjectInitializer& ObjectInitializer)
 
 	TableBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TABLE"));
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_CARD(TEXT("StaticMesh'/Game/OfficePack/StaticMesh/SM_Desk03.SM_Desk03'"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_TABLE(TEXT("/Game/OfficePack/StaticMesh/SM_Desk03.SM_Desk03"));
+
+	RootComponent = TableBody;
+
+	if (SM_TABLE.Succeeded()) {
+		// TableBody->SetStaticMesh(SM_TABLE.Object);
+	}
 
 	UWorld* world = GetWorld();
 
 	if (!UObject::IsTemplate(RF_Transient) && world) {
 		for (int i = 0; i < 2; i++) {
-			LampActors[i] = ObjectInitializer.CreateDefaultSubobject<UChildActorComponent>(this, TEXT("Lamp"));
-			LampActors[i]->SetChildActorClass(ALamp::StaticClass());
-			// LampActors[i]->CreateChildActor();
-			/*Lamps[i] = (ALamp*)world->SpawnActor(ALamp::StaticClass());
 			FString label;
 			label += TEXT("Lamp");
 			label.AppendInt(i);
-			Lamps[i]->SetActorLabel(*label);
-			Lamps[i]->AttachToActor(this, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
-			Lamps[i]->SetActorRelativeLocation(FVector::ZeroVector);*/
+			LampActors[i] = ObjectInitializer.CreateDefaultSubobject<UChildActorComponent>(this, *label);
+			LampActors[i]->SetChildActorClass(ALamp::StaticClass());
+			LampActors[i]->SetupAttachment(RootComponent);
+			LampActors[i]->SetRelativeLocation(FVector(i * 20, 0, 0));
 		}
 	}
 }
@@ -53,8 +56,9 @@ void ATable::PostInitializeComponents()
 
 void ATable::ControlLamp(int idx, bool turnOn)
 {
-	/*if (idx == 0 || idx == 1) {
-		Lamps[idx]->ControlLamp(turnOn);
-	}*/
+	if (idx == 0 || idx == 1) {
+		// Lamps[idx]->ControlLamp(turnOn);
+		//LampActors[idx]->GetChildActorClass();
+	}
 }
 
