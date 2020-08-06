@@ -12,10 +12,11 @@ UCLASS()
 class ONEPOKER_API ATable : public AActor
 {
 	GENERATED_UCLASS_BODY()
+	//GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ATable();
+	//ATable();
 
 protected:
 	// Called when the game starts or when spawned
