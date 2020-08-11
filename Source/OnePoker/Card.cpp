@@ -16,6 +16,7 @@ ACard::ACard(const FObjectInitializer& ObjectInitializer)
 	MeshInstances = ObjectInitializer.CreateAbstractDefaultSubobject<UInstancedStaticMeshComponent>(this, TEXT("MeshInstances"));
 
 	if (SM_CARD.Succeeded()) {
+		CardBody->SetStaticMesh(SM_CARD.Object);
 		MeshInstances->SetStaticMesh(SM_CARD.Object);
 		AddInstanceComponent(MeshInstances);
 	}

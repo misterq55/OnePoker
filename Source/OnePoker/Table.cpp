@@ -5,32 +5,31 @@
 #include "Lamp.h"
 
 // Sets default values
-ATable::ATable(const FObjectInitializer& ObjectInitializer)
-//ATable::ATable()
+ATable::ATable()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	TableBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TABLE"));
 
-	//RootComponent = TableBody;
+	RootComponent = TableBody;
 
-	//UWorld* world = GetWorld();
+	UWorld* world = GetWorld();
 
-	/*if (!UObject::IsTemplate(RF_Transient) && world) {
+	if (!UObject::IsTemplate(RF_Transient) && world) {
 		for (int i = 0; i < 2; i++) {
 			FString label;
 			label += TEXT("Lamp");
 			label.AppendInt(i);
-			LampActors[i] = ObjectInitializer.CreateDefaultSubobject<UChildActorComponent>(this, *label);
+			LampActors[i] = CreateDefaultSubobject<UChildActorComponent>(*label);
 			LampActors[i]->SetChildActorClass(ALamp::StaticClass());
 			LampActors[i]->SetupAttachment(TableBody);
-			LampActors[i]->SetRelativeLocation(FVector(i * 20, 0, 0));
+			LampActors[i]->SetRelativeLocation(FVector(-10, i * 20 - 50, 60));
+			LampActors[i]->SetRelativeRotation(FRotator(0, -90.f, 0));
 		}
-	}*/
+	}
 
-	// static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_TABLE(TEXT("/Game/OfficePack/StaticMesh/SM_Desk03.SM_Desk03"));
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_TABLE(TEXT("/Game/OfficePack/StaticMesh/SM_Lamp07.SM_Lamp07"));
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> SM_TABLE(TEXT("/Game/OfficePack/StaticMesh/SM_Desk03.SM_Desk03"));
 
 	if (SM_TABLE.Succeeded()) {
 		TableBody->SetStaticMesh(SM_TABLE.Object);
@@ -49,18 +48,5 @@ void ATable::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-}
-
-void ATable::PostInitializeComponents()
-{
-
-}
-
-void ATable::ControlLamp(int idx, bool turnOn)
-{
-	if (idx == 0 || idx == 1) {
-		// Lamps[idx]->ControlLamp(turnOn);
-		//LampActors[idx]->GetChildActorClass();
-	}
 }
 
