@@ -21,9 +21,19 @@ ATable::ATable()
 			FString label;
 			label += TEXT("Lamp");
 			label.AppendInt(i);
+
+			/*Lamps[i] = (ALamp*)world->SpawnActor(ALamp::StaticClass());
+			Lamps[i]->SetActorLabel(*label);
+			Lamps[i]->GetRootComponent()->SetupAttachment(TableBody);
+			Lamps[i]->SetActorRelativeLocation(FVector(-10, i * 20 - 50, 60));
+			Lamps[i]->SetActorRelativeRotation(FRotator(0, -90.f, 0));*/
+
 			LampActors[i] = CreateDefaultSubobject<UChildActorComponent>(*label);
+			LampActors[i]->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+			//LampActors[i]->SetupAttachment(RootComponent);
 			LampActors[i]->SetChildActorClass(ALamp::StaticClass());
-			LampActors[i]->SetupAttachment(TableBody);
+			//LampActors[i]->RegisterComponent();
+			LampActors[i]->CreateChildActor();
 			LampActors[i]->SetRelativeLocation(FVector(-10, i * 20 - 50, 60));
 			LampActors[i]->SetRelativeRotation(FRotator(0, -90.f, 0));
 		}

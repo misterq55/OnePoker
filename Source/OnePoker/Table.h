@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Table.generated.h"
 
+class ALamp;
 UCLASS()
 class ONEPOKER_API ATable : public AActor
 {
@@ -29,5 +30,6 @@ private:
 	UStaticMeshComponent* TableBody;
 
 	UPROPERTY(VisibleAnyWhere)
-	UChildActorComponent* LampActors[2];
+		UChildActorComponent* LampActors[2];
+		ALamp* Lamps[2];
 };
